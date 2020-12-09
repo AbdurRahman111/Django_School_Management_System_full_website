@@ -1,0 +1,29 @@
+{%  extends 'base.html' %}
+
+{%block title%}Check User{% endblock %}
+
+{%block body%}
+
+<form class="container pt-5" action="/check_user_password_student" method="POST">
+			{% csrf_token %}
+
+			<div class="form-group">
+			    <label for="exampleFormControlInput40">User ID</label>
+			    <input  type="text"  name="check_id" class="form-control" id="exampleFormControlInput40" placeholder="User ID">
+			    <input  type="hidden"  name="get_id_student" value="{{get_id_stu}}">
+
+			</div>
+
+			<div class="form-group">
+			    <label for="exampleFormControlInput50">Password</label>
+			    <input  type="password" name="check_pass" class="form-control" id="exampleFormControlInput50" placeholder="********">
+			</div>
+
+			<div class="form-group">
+			    <input class="btn btn-info" type="submit" value="Login">
+			</div>
+
+
+		</form>
+
+{% endblock %}

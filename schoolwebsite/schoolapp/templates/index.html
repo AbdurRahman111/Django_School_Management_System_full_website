@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{%block title%}{% endblock %}
+
+{%block body%}
+
+{% if messages %}
+{% for message in messages %}
+
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>WellDone!</strong> {{message}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% endfor %}
+{% endif %}
+
+{% if request.session.Teacher_id %}
+
+<div class="pt-5 ml-5 mr-5 pl-5 pr-5 mt-5 bg-info">
+<div class="card card-body pt-5 ml-5 mr-5">
+    <h2 style="text-align: center">Welcome, Sir {{request.session.Teacher_name}}</h2>
+
+    <hr>
+    <div class="card container bg-info" style="width: 18rem;">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item pl-5">
+
+                <form action="/sir_course" method="POST">{% csrf_token %}
+                        <div class="form-group">
+                            <input type="hidden" name="teach_course_id" value="{{request.session.Teacher_id}}" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <button type="submit" class="btn btn-outline-info btn-sm">Go To Your Classroom</button>
+                    </form>
+
+            </li>
+
+        </ul>
+    </div>
+    <hr>
+
+
+</div>
+</div>
+
+
+
+
+{% elif request.session.Stu_id %}
+
+<div class="pt-5 ml-5 mr-5 pl-5 pr-5 mt-5 bg-info">
+<div class="card card-body pt-5 ml-5 mr-5">
+    <h2 style="text-align: center">Welcome, {{request.session.Stu_name}}</h2>
+
+    <hr>
+    <div class="card container bg-info" style="width: 18rem;">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item pl-5">
+
+                <form action="/stu_course" method="POST">{% csrf_token %}
+                        <div class="form-group">
+                            <input type="hidden" name="stu_course_id" value="{{request.session.Stu_id}}" class="form-control" id="exampleInputPassword3">
+                        </div>
+                        <button type="submit" class="btn btn-outline-info btn-sm">Go To Your Classroom</button>
+                    </form>
+
+            </li>
+
+        </ul>
+    </div>
+    <hr>
+
+
+</div>
+</div>
+
+
+
+
+{% else %}
+<div class="jumbotron  container pt-5 mt-5">
+  <h1 class="display-4">School Management System !!!</h1>
+  <p class="lead">Wellcome to School Management System. </p>
+  <hr class="my-4">
+  <p>You Have To login for more information !!!</p>
+  <a class="btn btn-success btn-lg" href="login" role="button">Login</a>
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

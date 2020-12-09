@@ -1,0 +1,293 @@
+{%  extends 'base.html' %}
+
+{%block title%}Assignment{% endblock %}
+
+{%block body%}
+{% load humanize %}
+{% load get_dict %}
+
+
+<div class="row container pt-5 ml-5 mr-5 pr-5">
+  <div class="col-3">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">List of Student</a>
+      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Current Assignment</a>
+      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Submitted Assignments</a>
+      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Grade Students</a>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+        <form class="container ml-5 mb-4" action="/add_assignment" method="POST">{% csrf_token %}
+          <input name="get_course_name_cors" type="hidden" value="{{get_course_name}}">
+
+          <button type="submit" class="btn btn-outline-info btn-sm">Create Assignment for {{get_id_course_course_name}}</button>
+        </form>
+
+
+        {% if stu_course_all_stu %}
+        {% for m in stu_course_all_stu %}
+
+        <div class="card mb-3 ml-5" style="max-width: 840px;">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <img src="/media/uploads/student_user.png" class="rounded profile-pic mt-2 ml-5 mb-2" alt="user" height="120" width="140">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Student ID : {{m}}</h5>
+                <form action="/stu_id_details" method="POST">{% csrf_token %}
+                  <div class="form-group">
+                    <input type="hidden" name="get_id_stu_details" value="{{m}}" class="form-control" id="exampleInputPassword2">
+                  </div>
+                  <button type="submit" class="btn btn-outline-success btn-sm">See Student Details</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+        <span class="text-muted container pt-5 pl-5 ml-4"> No Student in This Course !!</span>
+        {% endif %}
+
+
+      </div>
+      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+        {% if get_assignment %}
+
+        {% for n in get_assignment %}
+        <table class="table table-striped pt-5 mt-5 mb-5">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">{{n.Assignment_name}}</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Course Name</th>
+            <td>{{n.course}}</td>
+
+          </tr>
+
+          <tr>
+            <th scope="row">Publish Date</th>
+            <td>{{n.date}}</td>
+
+          </tr>
+          <tr>
+            <th scope="row">Due Date</th>
+            <td>{{n.due_date}}</td>
+
+          </tr>
+          <tr>
+            <th scope="row">Title</th>
+            <td>{{n.title}}</td>
+
+          </tr>
+          <tr>
+            <th scope="row">Details</th>
+            <td>{{n.Details}}</td>
+
+          </tr>
+          <tr>
+            <th scope="row">Attachment</th>
+            <td>
+              <a href="{{n.attachment}}" class="btn btn-info btn-sm" target="_blank"> Download Assignment </a>
+              </td>
+          </tr>
+
+          <tr>
+            <th scope="row">Resource</th>
+            <td>{{n.resource}}</td>
+
+          </tr>
+          <tr>
+            <th scope="row">Posts</th>
+            <td>{{n.posts}}</td>
+
+          </tr>
+
+        <tr>
+            <th scope="row">Grade</th>
+            <td>{{n.Out_Of_Grade}}</td>
+
+          </tr>
+
+        </tbody>
+      </table>
+        <hr>
+
+        <div class="container"><hr class="my-4"><h2>Comments</h2></div>
+        </br>
+
+        <form class="form-inline container mb-5 " method="POST" action="/postComments">{% csrf_token %}
+
+            <div class="form-group mx-sm-3 mb-2">
+                <input name="comment_ass" type="text" class="form-control" placeholder="Comment Here">
+                <input name="ass_id" type="hidden" value="{{n.id}}">
+                <input name="serial_no" type="hidden" value="">
+                <input name="comment_username" type="hidden" value="{{get_id_course_id_teach_name.Teacher_Name}}">
+
+            </div>
+            <button type="submit" class="btn btn-outline-success mb-2 ml-2">Submit</button>
+        </form>
+
+
+
+        {% for comment in get_all_comments %}
+
+          <div class="row my-3">
+              <div class="col-md-1"><img src="/media/uploads/user.png" class="rounded mx-auto d-block" alt="user" width="50px" height="40px"></div>
+              <div class="col-md-11"><b>{{comment.user}}</b> <small> <span class="badge badge-secondary">{{comment.time_comment | naturalday}}</span> ({{comment.time_comment}})</small>
+                  <div>{{comment.comment}}</div>
+
+                  <div class="reply mx-0">
+                        <button class="btn btn-sm btn-outline-primary mt-4" type="button" data-toggle="collapse" data-target="#reply{{comment.serial_no}}" aria-expanded="false" aria-controls="reply{{comment.serial_no}}">
+                          Reply
+                        </button>
+
+                      <div class="collapse" id="reply{{comment.serial_no}}">
+                        <div class="card card-body my-2">
+                          <form class="form-inline container" method="POST" action="/postComments">{% csrf_token %}
+
+                              <div class="form-group mx-sm-3 mb-2">
+
+
+                                  <input name="comment_ass" type="text" class="form-control" placeholder="Reply a comment">
+                                  <input name="serial_no" type="hidden" value="{{comment.serial_no}}">
+                                  <input name="ass_id" type="hidden" value="{{get_assignment12.id}}">
+
+                                  <input name="comment_username" type="hidden" value="{{get_id_course_id_teach_name.Teacher_Name}}">
+
+                              </div>
+                              <button type="submit" class="btn btn-outline-success mb-2 ml-2">Submit</button>
+                          </form>
+                        </div>
+                      </div>
+
+                    <div class="replies my-3">
+					{% for replycomment in repDict|get_value:comment.serial_no %}
+					<div class="row">
+						<div class="col-md-1"><img src="/media/uploads/user.png" class="rounded mx-auto d-block" alt="user" width="40px" height="30px"></div>
+						<div class="col-md-11"><b>{{replycomment.user}}</b> <small> <span class="badge badge-secondary">{{replycomment.time_comment | naturalday}}</span> ({{replycomment.time_comment}})</small>
+			<div>{{replycomment.comment}}</div></div>
+
+					</div>
+
+
+					</br>
+
+
+					{% endfor %}
+					</div>
+
+
+
+
+                  </div>
+
+              </div>
+          </div>
+
+          {% endfor %}</br></br></br></br></br>
+
+
+        {% endfor %}
+        {% else %}
+        <span class="text-muted container pt-5 pl-5 ml-4"> No Assignment</span>
+        {% endif %}
+
+
+      </div>
+      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+
+        {% if get_submit_ass_fs_tt %}
+
+        {% for get_submit_ass in get_submit_ass_fs_tt %}
+
+        <div class="card mb-3 ml-5 mt-5" style="max-width: 640px;">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <img src="/media/uploads/student_user.png" class="rounded profile-pic mt-3 ml-5 mb-2" alt="user" height="90" width="110">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Student ID : {{get_submit_ass.Student_ID}} <span class="text-muted">({{get_submit_ass.course}})</span></h5>
+                <a href="{{get_submit_ass.attachment}}" class="btn btn-info btn-sm" target="_blank"><small>View Assignment and Download</small></a>
+
+
+                <form class="pt-2" method="POST" action="/grading_page">{% csrf_token %}
+                  <input type="hidden" name="stu_id_grade" value="{{get_submit_ass.Student_ID}}">
+                  <input type="hidden" name="stu_course_grade" value="{{get_submit_ass.course}}">
+                  <input type="hidden" name="stu_total_grade" value="{{get_assignment12.Out_Of_Grade}}">
+                  {% for i in get_assignment %}
+                  <input type="hidden" name="stu_ass_name_grade" value="{{i.Assignment_name}}">
+                  {% endfor %}
+
+                  <button class="btn btn-info btn-sm" type="submit"><small>Grade this Student</small></button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {% endfor %}
+
+        {% else %}
+        <span class="text-muted container pt-5 pl-5 ml-4"> No Student Submit Assignment in this Course !!</span>
+        {% endif %}
+
+      </div>
+      <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+
+        {% if get_grade_all_stu_course %}
+
+
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Student ID</th>
+              <th scope="col">Course Name</th>
+              <th scope="col">Assignment Name</th>
+              <th scope="col">Grade</th>
+              <th scope="col">Out of Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for get_grade_all_stu in get_grade_all_stu_course %}
+            <tr>
+              <th scope="row">{{get_grade_all_stu.Student_ID}}</th>
+              <td>{{get_grade_all_stu.course}}</td>
+              <td>{{get_grade_all_stu.Assignment_name}}</td>
+              <td>{{get_grade_all_stu.Grade}}</td>
+              <td>{{get_grade_all_stu.Out_Of_Grade}}</td>
+            </tr>
+          {% endfor %}
+
+          </tbody>
+        </table>
+
+
+
+        {% else %}
+        <span class="text-muted container pt-5 pl-5 ml-4"> No Grade</span>
+        {% endif %}
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

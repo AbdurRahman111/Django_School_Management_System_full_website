@@ -1,0 +1,283 @@
+{%  extends 'base.html' %}
+
+{%block title%}Profile Settings{% endblock %}
+
+{%block body%}
+
+{% if messages %}
+{% for message in messages %}
+
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong> {{message}}</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+{% endfor %}
+{% endif %}
+
+{% if request.session.Teacher_id %}
+<style>
+	.profile-pic{
+		max-width: 200px;
+		max-height:200px;
+		margin: 0 auto;
+		border-radius: 50%;
+	}
+</style>
+
+<br>
+
+{% for jk in add_email_user_email %}
+					  {{jk}}
+					  {% endfor %}
+
+<div class="row ml-5 pt-5 pl-5">
+	<div class="col-md-3">
+		<div class="card card-body">
+			<a class="btn btn-warning" href="{% url 'index' %}"> &#8592; Back to Home</a>
+			<hr>
+			<h3 style="text-align: center">Profile Settings</h3>
+			<hr>
+
+
+
+            <img src="/media/uploads/teacher_user.jpg" class="rounded profile-pic" alt="user">
+			<p class="container ml-2">Teacher Name : <b>{{request.session.Teacher_name}}</b></p>
+		
+		</div>
+	</div>
+	<div class="col-md-6 ml-5 mr-5 pt-3">
+		<div class="card card-body">
+			<table class="table container">
+
+			  <tbody>
+				<tr>
+				  <td>Teacher Name :</td>
+				  <td>{{request.session.Teacher_name}}</td>
+				</tr>
+				<tr>
+				  <td>Teacher ID :</td>
+				  <td>{{request.session.Teacher_id}}</td>
+				</tr>
+
+				<tr>
+				  <td>Teacher Email :</td>
+				  <td>
+
+					  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Email</button>
+
+
+						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Adding Email to your profile</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span>
+								</button>
+							  </div>
+							  <div class="modal-body">
+								<form class="container" action="/settings" method="POST">{% csrf_token %}
+
+								  <div class="form-group">
+									<label for="exampleInputEmail1">User ID</label>
+									<input type="text" name="add_email_user_id" class="form-control" id="userid" aria-describedby="userHelp" required placeholder="Fill your User ID">
+									<input type="hidden" name="user_id_uniq" value="{{request.session.Teacher_id}}">
+
+
+								  </div>
+
+								  <div class="form-group">
+									<label for="exampleInputPassword1">Password</label>
+									<input type="password" name="add_email_user_pass" class="form-control" id="exampleInputPassword1" required placeholder="User Password">
+								  </div>
+
+								  <div class="form-group">
+									<label for="exampleInputEmail1">Email address</label>
+									<input type="email" name="add_email_user_email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="Your Email">
+								  </div>
+
+								  <button type="submit" class="btn btn-primary">Submit</button>
+								</form>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							  </div>
+							</div>
+						  </div>
+						</div>
+
+				  </td>
+				</tr>
+
+			  	<tr>
+				  <td>Teacher Password :</td>
+				  <td>***********
+
+					  <form action="/check_user" method="POST">{% csrf_token %}
+						  <div class="form-group">
+							<input type="hidden" name="get_id_teach" value="{{request.session.Teacher_id}}" class="form-control" id="exampleInputPassword100">
+						  </div>
+						  <button type="submit" class="btn btn-outline-success btn-sm">Change Password</button>
+						</form>
+
+
+				  </td>
+				</tr>
+
+
+
+			  </tbody>
+			</table>
+		</div>
+</br></br>
+
+
+
+
+	</div>
+</div>
+
+
+{% elif request.session.Stu_id %}
+<style>
+	.profile-pic{
+		max-width: 200px;
+		max-height:200px;
+		margin: 0 auto;
+		border-radius: 50%;
+	}
+</style>
+
+<br>
+
+
+
+<div class="row ml-5 pt-5 pl-5">
+	<div class="col-md-3">
+		<div class="card card-body">
+			<a class="btn btn-warning" href="{% url 'index' %}"> &#8592; Back to Home</a>
+			<hr>
+			<h3 style="text-align: center">Profile Settings</h3>
+			<hr>
+
+
+
+            <img src="/media/uploads/student_user.png" class="rounded profile-pic" alt="user">
+			<p class="container ml-2">Student Name : <b>{{request.session.Stu_name}}</b></p>
+
+		</div>
+	</div>
+	<div class="col-md-6 ml-5 mr-5 pt-3">
+		<div class="card card-body">
+			<table class="table container">
+
+			  <tbody>
+				<tr>
+				  <td>Student Name :</td>
+				  <td>{{request.session.Stu_name}}</td>
+				</tr>
+				<tr>
+				  <td>Student ID :</td>
+				  <td>{{request.session.Stu_id}}</td>
+				</tr>
+
+				<tr>
+				  <td>Student ID :</td>
+				  <td>
+
+					  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo">Add Email</button>
+
+
+						<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel1">Adding Email to your profile</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span>
+								</button>
+							  </div>
+							  <div class="modal-body">
+								<form class="container" action="/settings" method="POST">{% csrf_token %}
+
+								  <div class="form-group">
+									<label for="exampleInputEmail1">User ID</label>
+									<input type="text" name="add_email_user_id" class="form-control" id="userid1" aria-describedby="userHelp" required placeholder="Fill your User ID">
+									<input type="hidden" name="user_id_uniq" value="{{request.session.Stu_id}}">
+
+
+								  </div>
+
+								  <div class="form-group">
+									<label for="exampleInputPassword1">Password</label>
+									<input type="password" name="add_email_user_pass" class="form-control" id="exampleInputPassword11" required placeholder="User Password">
+								  </div>
+
+								  <div class="form-group">
+									<label for="exampleInputEmail1">Email address</label>
+									<input type="email" name="add_email_user_email" class="form-control" id="exampleInputEmail11" aria-describedby="emailHelp" required placeholder="Your Email">
+								  </div>
+
+								  <button type="submit" class="btn btn-primary">Submit</button>
+								</form>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							  </div>
+							</div>
+						  </div>
+						</div>
+
+				  </td>
+				</tr>
+
+			  	<tr>
+				  <td>Student Password :</td>
+				  <td>***********
+
+					  <form action="/check_user_student" method="POST">{% csrf_token %}
+						  <div class="form-group">
+							<input type="hidden" name="get_id_stu" value="{{request.session.Stu_id}}" class="form-control" id="exampleInputPassword200">
+						  </div>
+						  <button type="submit" class="btn btn-outline-success btn-sm">Change Password</button>
+						</form>
+
+
+				  </td>
+				</tr>
+
+
+
+			  </tbody>
+			</table>
+		</div>
+</br></br>
+
+
+
+
+	</div>
+</div>
+
+
+
+{% else %}
+
+<div class="jumbotron container pt-5 mt-5">
+    <h1 class="display-4"><b>You Have To <a href="/login">Login</a> First !!!</b></h1>
+  <p class="lead">You can not go this page. If you want to go your profile page, You have to <a href="/login">Login</a> first.</br>THANK YOU</p>
+  <hr class="my-4">
+
+  <a class="btn btn-success btn-lg" href="/login" role="button">Login</a>
+
+</div>
+
+
+{% endif %}
+
+{% endblock %}

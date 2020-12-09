@@ -1,0 +1,46 @@
+
+
+{% extends 'base.html' %}
+
+
+{%block title%}{% endblock %}
+
+{%block body%}
+
+<nav>
+  <div class="nav nav-tabs  container pt-5" id="nav-tab" role="tablist">
+    <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">List of courses</a>
+
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+
+
+      {% for k in get_course_name_t_cours %}
+          <div class="card container mt-4 mb-5">
+              <h5 class="card-header">{{k}}</h5>
+              <div class="card-body">
+
+
+                <form action="/assignment_page" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="hidden" name="get_course_name" value="{{k}}" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <button type="submit" class="btn btn-outline-info btn-sm">All Student</button>
+                </form>
+
+              </div>
+            </div>
+          {% endfor %}
+
+  </div>
+
+</div>
+
+
+
+
+
+{% endblock %}

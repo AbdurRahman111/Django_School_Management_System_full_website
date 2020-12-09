@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+
+{%block title%}Student Details{% endblock %}
+
+{%block body%}
+
+
+<style>
+	.profile-pic{
+		max-width: 200px;
+		max-height:200px;
+		margin: 0 auto;
+		border-radius: 50%;
+	}
+</style>
+
+<br>
+
+
+
+<div class="row ml-5 pt-5 pl-5">
+	<div class="col-md-3">
+		<div class="card card-body">
+
+			<hr>
+			<h3 style="text-align: center">{{get_details_stu.Student_Name}}</h3>
+			<hr>
+
+
+
+            <img src="/media/uploads/student_user.png" class="rounded profile-pic" alt="user">
+
+
+		</div>
+	</div>
+	<div class="col-md-6 ml-5 mr-5 pt-3">
+		<div class="card card-body">
+			<table class="table container">
+
+			  <tbody>
+				<tr>
+				  <td>Student Name :</td>
+				  <td>{{get_details_stu.Student_Name}}</td>
+				</tr>
+				<tr>
+				  <td>Student ID :</td>
+				  <td>{{get_details_stu.Student_ID}}</td>
+				</tr>
+
+                <tr>
+				  <td>Student Course :</td>
+				  <td>{{get_details_stu.course}}</td>
+				</tr>
+
+
+			  </tbody>
+			</table>
+		</div>
+</br></br>
+
+
+
+
+	</div>
+</div>
+
+
+{% endblock %}

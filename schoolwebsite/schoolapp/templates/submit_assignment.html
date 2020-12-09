@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{%block title%}Submit Assignment{% endblock %}
+
+{%block body%}
+
+<form class="container pt-5" action="/submit_assignment_student" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+
+        <input type="hidden" name="ass_name_stu_submit1" value="{{ass_name_stu_submit}}">
+        <input type="hidden" name="cor_name_stu_submit1" value="{{cor_name_stu_submit}}">
+        <input type="hidden" name="stu_id_stu_submit1" value="{{stu_id_stu_submit}}">
+        <div class="form-group">
+            <label>Attachment</label>
+            <input  type="file"  name="attachment_ass_sub">
+        </div>
+
+    </div>
+        <button class="btn btn-outline-success btn-sm mt-4 mb-5" type="submit">Upload Assignment</button>
+		</form>
+
+{% endblock %}

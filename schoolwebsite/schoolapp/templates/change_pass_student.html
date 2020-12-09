@@ -1,0 +1,15 @@
+{%  extends 'base.html' %}
+
+{%block title%}click To Change password{% endblock %}
+
+{%block body%}
+
+<div class="container pt-5 mt-5">
+    <div class="container pt-5 mt-5"><hr>
+        ---------->>>>>> Hey, You can Change Your Password From Here   ----------->>>>>>
+        <a class="btn btn-outline-success btn-sm" href="{% url 'update_change_password_stu' request.session.Stu_id %}">Change Password</a>
+    <hr>
+    </div>
+</div>
+
+{% endblock %}
